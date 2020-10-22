@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def index(request):
+    """Carrega receitas na pagina principal"""
     receitas = Receita.objects.order_by('-data_receita').filter(publicada=True)
     paginator = Paginator(receitas, 3)
     page = request.GET.get('page')
@@ -18,6 +19,7 @@ def index(request):
 
 
 def receita(request, receita_id):
+    """Carrega pagina de receita"""
     receita = get_object_or_404(Receita, pk=receita_id)
 
     receita_a_exibir = {
@@ -27,6 +29,7 @@ def receita(request, receita_id):
 
 
 def cria_receita(request):
+    """Insere receita na base de dados"""
     if request.method == 'POST':
         nome_receita = request.POST['nome_receita']
         ingredientes = request.POST['ingredientes']
@@ -51,6 +54,7 @@ def cria_receita(request):
 
 
 def deleta_receita(request, receita_id):
+    """Exclui receita selecionada da base de dados"""
     receita = get_object_or_404(Receita, pk=receita_id)
     receita.delete()
     messages.success(request, 'Receita removida com sucesso')
@@ -58,12 +62,14 @@ def deleta_receita(request, receita_id):
 
 
 def edita_receita(request, receita_id):
+    """Carrega pagina de edicao para a edicao de receita"""
     receita = get_object_or_404(Receita, pk=receita_id)
     receita_a_editar = {'receita': receita}
     return render(request, 'receitas/edita_receita.html', receita_a_editar)
 
 
 def atualiza_receita(request):
+    """Realiza alteracao da receita na base de dados"""
     if request.method == 'POST':
         receita_id = request.POST['receita_id']
         r = Receita.objects.get(pk=receita_id)

@@ -3,6 +3,7 @@ from django.shortcuts import get_list_or_404, get_object_or_404, render
 
 
 def busca(request):
+    """Busca receita especifica"""
     lista_receitas = Receita.objects.order_by(
         '-data_receita').filter(publicada=True)
 
